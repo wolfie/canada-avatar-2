@@ -7,6 +7,28 @@ const PRECISION = 1000;
 const StyledInput = styled.input`
   width: 80vw;
 `;
+
+const CodePreWrapper = styled.pre`
+  background-color: black;
+  color: #d2ffd9;
+`;
+
+const ConfigWrapper = styled.div`
+  padding: 20px;
+
+  & > pre {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 20px;
+  }
+`;
+
+const Button = styled.button`
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  margin-top: 1em;
+`;
+
 type InputProps = {
   label: string;
   onChange: (value: number) => void;
@@ -46,8 +68,7 @@ const Config: React.FC<ConfigProps> = ({
   selectedMicDeviceId,
   onMicDeviceIdChange,
 }) => (
-  <>
-    <a href="#done">Done!</a>
+  <ConfigWrapper>
     <MicInput
       hasAskedForUserMedia={hasAskedForUserMedia}
       onMicDeviceIdChange={onMicDeviceIdChange}
@@ -68,15 +89,18 @@ const Config: React.FC<ConfigProps> = ({
       onChange={(y) => onNosePositionChange({ ...nosePosition, y })}
       value={nosePosition.y}
     />
-    <pre>
+
+    <Button onClick={() => (window.location.hash = "#done")}>DONE</Button>
+
+    <CodePreWrapper>
       <code>
         {`const [mouthPosition, setMouthPosition] = React.useState(${mouthPosition});\n` +
           `const [nosePosition, setNosePosition] = React.useState(${JSON.stringify(
             nosePosition
           )});`}
       </code>
-    </pre>
-  </>
+    </CodePreWrapper>
+  </ConfigWrapper>
 );
 
 export default Config;

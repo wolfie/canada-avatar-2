@@ -1,7 +1,15 @@
 import React from "react";
 
-type MicInputProps = { hasAskedForUserMedia: boolean };
-const MicInput: React.FC<MicInputProps> = ({ hasAskedForUserMedia }) => {
+type MicInputProps = {
+  hasAskedForUserMedia: boolean;
+  selectedMicDeviceId: string | undefined;
+  onMicDeviceIdChange: (deviceId: string) => void;
+};
+const MicInput: React.FC<MicInputProps> = ({
+  hasAskedForUserMedia,
+  onMicDeviceIdChange,
+  selectedMicDeviceId,
+}) => {
   const [audioDevices, setAudioDevices] = React.useState<MediaDeviceInfo[]>([]);
 
   React.useEffect(() => {
@@ -14,11 +22,19 @@ const MicInput: React.FC<MicInputProps> = ({ hasAskedForUserMedia }) => {
         .then(setAudioDevices);
   }, [hasAskedForUserMedia]);
 
+  React.useEffect(() => {
+    if (audioDevices.length === 0 || selectedMicDeviceId) return;
+    onMicDeviceIdChange(audioDevices[0].deviceId);
+  }, [audioDevices, selectedMicDeviceId, onMicDeviceIdChange]);
+
   return (
     <div>
       <label>
         Select audio input
-        <select>
+        <select
+          onChange={(e) => onMicDeviceIdChange(e.currentTarget.value)}
+          value={selectedMicDeviceId}
+        >
           {audioDevices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>
               {device.label}

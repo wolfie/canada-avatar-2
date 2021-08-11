@@ -93,8 +93,7 @@ const Avatar: React.FC<AvatarProps> = ({
           overflow: "hidden",
           height: `${mouthPosition * 100}%`,
           transformOrigin: `${nosePosition.x * 100}% ${nosePosition.y * 100}%`,
-          transform: `translateY(${translate * 100}%)`,
-          rotate: `${rotate}deg`,
+          transform: `translateY(${translate * 100}%) rotate(${rotate}deg)`,
         }}
       >
         {showConfig && (

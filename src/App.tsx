@@ -11,16 +11,28 @@ function App() {
     x: 0.516,
     y: 0.856,
   });
+  const [selectedMicDeviceId, setSelectedMicDeviceId] =
+    React.useState<string>();
 
   const reEvaluateShowConfig = () =>
     setShowConfig(window.location.hash !== "#done");
 
   React.useEffect(() => {
+    let oldStream: MediaStream | undefined;
     window.navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      //.then((stream) => stream.getTracks().forEach((track) => track.stop()))
-      .then(setStream);
-  }, []);
+      .getUserMedia({
+        audio: selectedMicDeviceId
+          ? { deviceId: { exact: selectedMicDeviceId } }
+          : true,
+      })
+      .then((stream) => {
+        console.log({ stream, selectedMicDeviceId });
+        oldStream = stream;
+        setStream(stream);
+      });
+
+    return () => oldStream?.getAudioTracks().forEach((track) => track.stop());
+  }, [selectedMicDeviceId]);
 
   React.useEffect(() => {
     reEvaluateShowConfig();
@@ -64,6 +76,8 @@ function App() {
           mouthPosition={mouthPosition}
           nosePosition={nosePosition}
           onNosePositionChange={setNosePosition}
+          onMicDeviceIdChange={setSelectedMicDeviceId}
+          selectedMicDeviceId={selectedMicDeviceId}
         />
       )}
     </>

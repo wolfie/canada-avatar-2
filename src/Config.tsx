@@ -34,6 +34,8 @@ type ConfigProps = {
   onMouthPositionChange: (value: number) => void;
   nosePosition: { x: number; y: number };
   onNosePositionChange: (val: { x: number; y: number }) => void;
+  selectedMicDeviceId: string | undefined;
+  onMicDeviceIdChange: (deviceId: string) => void;
 };
 const Config: React.FC<ConfigProps> = ({
   hasAskedForUserMedia,
@@ -41,10 +43,16 @@ const Config: React.FC<ConfigProps> = ({
   onMouthPositionChange,
   nosePosition,
   onNosePositionChange,
+  selectedMicDeviceId,
+  onMicDeviceIdChange,
 }) => (
   <>
     <a href="#done">Done!</a>
-    <MicInput hasAskedForUserMedia={hasAskedForUserMedia} />
+    <MicInput
+      hasAskedForUserMedia={hasAskedForUserMedia}
+      onMicDeviceIdChange={onMicDeviceIdChange}
+      selectedMicDeviceId={selectedMicDeviceId}
+    />
     <Input
       label="Mouth position"
       onChange={onMouthPositionChange}
@@ -60,6 +68,14 @@ const Config: React.FC<ConfigProps> = ({
       onChange={(y) => onNosePositionChange({ ...nosePosition, y })}
       value={nosePosition.y}
     />
+    <pre>
+      <code>
+        {`const [mouthPosition, setMouthPosition] = React.useState(${mouthPosition});\n` +
+          `const [nosePosition, setNosePosition] = React.useState(${JSON.stringify(
+            nosePosition
+          )});`}
+      </code>
+    </pre>
   </>
 );
 

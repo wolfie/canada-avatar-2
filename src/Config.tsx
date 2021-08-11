@@ -89,12 +89,12 @@ const Config: React.FC<ConfigProps> = ({
       onChange={(y) => onNosePositionChange({ ...nosePosition, y })}
       value={nosePosition.y}
     />
-
-    <Button onClick={() => (window.location.hash = "#done")}>DONE</Button>
-
+    <Button onClick={() => (window.location.hash = "#done")}>DONE</Button> You
+    can press <kbd>Escape</kbd> to get back here
     <CodePreWrapper>
       <code>
-        {`const [mouthPosition, setMouthPosition] = React.useState(${mouthPosition});\n` +
+        {`// Copy and replace in src/App.tsx:\n\n` +
+          `const [mouthPosition, setMouthPosition] = React.useState(${mouthPosition});\n` +
           `const [nosePosition, setNosePosition] = React.useState(${JSON.stringify(
             nosePosition
           )});`}

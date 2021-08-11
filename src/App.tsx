@@ -26,7 +26,6 @@ function App() {
           : true,
       })
       .then((stream) => {
-        console.log({ stream, selectedMicDeviceId });
         oldStream = stream;
         setStream(stream);
       });
@@ -59,6 +58,17 @@ function App() {
 
     setAnalyser(analyser);
   }, [stream]);
+
+  React.useEffect(() => {
+    const keyListener = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "Escape":
+          return (window.location.hash = "");
+      }
+    };
+    window.addEventListener("keyup", keyListener);
+    return () => window.removeEventListener("keyup", keyListener);
+  }, []);
 
   return (
     <>
